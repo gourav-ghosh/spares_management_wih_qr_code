@@ -1,0 +1,70 @@
+.nav-link {
+    color: #f7941d;
+}
+.login_buttons {
+    background-color: #f7941d !important;
+    color: white !important;
+}
+.login_inputs {
+    height: 50px;
+}
+
+
+/*-------------Side Bar --------------*/
+@media (max-width: 2160px) {
+    .admin_sidebar_logo img {
+        max-width: 150px;
+    }
+}
+@media (max-width: 768px) {
+    .admin_sidebar_logo img {
+        max-width: 100px;
+    }
+}
+@media (max-width: 500px) {
+    .admin_sidebar_logo img {
+        max-width: 75px;
+    }
+}
+@media (max-width: 300px) {
+    .admin_sidebar_logo img {
+        max-width: 50px;
+    }
+}
+
+/*-------------Side Bar --------------*/
+/*-------------Entire Page --------------*/
+
+body {
+    font-family: "Urbanist", sans-serif !important;
+}
+hr {
+    height: 2px;
+    border-width: 75%;
+    color: rgb(183, 40, 40);
+    background-color: #f7941d;
+}
+input {
+    border-radius: 5px !important;
+}
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+    z-index: 3;
+    color: #1b263b !important;
+    background-color: #f7941d !important;
+    border-color: #f7941d !important;
+}
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #f7941d !important;
+    border-color: #f7941d !important;
+}
+.page-item .page-link {
+    color: #f7941d;
+
+}
+
+/*-------------Entire Page --------------*/
