@@ -205,9 +205,9 @@
         <div style="font-size: 24px; font-weight: 600; margin-left: 3%; margin-top: 20px;">
             <u> Maintenance History </u>
         </div>
-        <table style="margin: 10px;">
+        <table style="margin: 10px;  width: calc( 100% - 20px);">
             <thead>
-                <th style="padding: 15px; border: 2px solid black; font-weight: 600; width: 15%; text-align: center;" ><u> Sl. No.</u></th>
+                <th style="padding: 15px 5px; border: 2px solid black; font-weight: 600; width: 15%; text-align: center;" ><u> Sl. No.</u></th>
                 <th style="padding: 15px; border: 2px solid black; font-weight: 600; width: 65%; text-align: center;" ><u> Defect</u></th>
                 <th style="padding: 15px; border: 2px solid black; font-weight: 600; width: 20%; text-align: center;" ><u> Date</u></th>
             </thead>
@@ -216,7 +216,7 @@
                     <tr> 
                         <td style="padding: 15px; border: 2px solid black; width: 15%; text-align: center;">{{$key+1}} </td>
                         <td style="padding: 15px; border: 2px solid black; width: 65%; text-align: justify;">{{$maintenance->defect}}</td>
-                        <td style="padding: 15px; border: 2px solid black; width: 20%; text-align: center;">@if($maintenance->maintenance_completed) {{$maintenance->maintenance_completed}} @else Not resolved yet @endif</td>
+                        <td style="padding: 15px 5px; border: 2px solid black; width: 20%; text-align: center;">@if($maintenance->maintenance_completed) {{Carbon\Carbon::parse($maintenance->maintenance_completed)->format('d-m-y')}} @else Not resolved yet @endif</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -406,7 +406,7 @@ function printQR()
     tempContainer.appendChild(cloneDiv);
     tempContainer.hidden=false;
     var printWindow = window.open('', '');
-    printWindow.document.write('<html><head></head><body></body></html>');
+    printWindow.document.write('<html><body></body></html>');
     printWindow.document.body.appendChild(tempContainer);
     printWindow.document.close();
     printWindow.print();

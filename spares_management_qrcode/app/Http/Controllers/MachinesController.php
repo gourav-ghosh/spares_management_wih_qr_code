@@ -45,7 +45,7 @@ class MachinesController extends Controller
                 $per_page = 10;
             }
             $machines_count = Machines::all()->count();
-            $machines = Machines::with(['medias'])->whereIn('department', $department_options)->orderBy('created_at')->paginate($per_page);
+            $machines = Machines::with(['medias'])->whereIn('department', $department_options)->orderBy('created_at', 'DESC')->paginate($per_page);
             
             if($request){
                 Session::put('filters', $request->all());

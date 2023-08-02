@@ -19,7 +19,7 @@
                     style="visibility: hidden;"  required>
                 </div>
                 
-                <div><span id="customer_style">Spare Id<span style="color: #F72C1D; padding-left: 1px;">*</span></span>
+                <div><span id="customer_style">Select One: <span style="color: #F72C1D; padding-left: 1px;">*</span></span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-top: 10px; margin-right: 10%;">
                     <div id="machine_lable"
