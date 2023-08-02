@@ -51,9 +51,9 @@
             <!-- id="content" style="display:none;" -->
             <main class="py-0" id="content" style="visibility: hidden;">@yield('content')</main>
 
-            <div style="height:100px"></div>
+            <!-- <div style="height:100px"></div> -->
 
-            @include('layout.footer')
+            <!-- @include('layout.footer') -->
         </div>
     </div>
 

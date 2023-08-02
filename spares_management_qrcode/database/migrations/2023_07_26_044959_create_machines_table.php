@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('machine_name')->nullable()->default(null);
             $table->string('machine_type')->nullable()->default(null);
             $table->enum('department', ['admin', 'hr', 'mcl', 'ccl', 'mechanical', 'electrical']);
+            $table->text('description')->nullable()->default(null);
             $table->date('last_maintenance_date')->nullable()->default(null);
             $table->date('due_maintenance_date')->nullable()->default(null);
             $table->date('operation_start_date')->default(DB::raw('CURRENT_TIMESTAMP'));

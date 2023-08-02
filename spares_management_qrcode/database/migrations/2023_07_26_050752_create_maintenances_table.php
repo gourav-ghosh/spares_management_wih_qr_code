@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('machine_id')->unsigned()->default(null);
+            $table->bigInteger('machine_id')->unsigned()->nullable()->default(null);
             $table->foreign('machine_id')->references('id')->on('machines'); 
-            $table->bigInteger('spare_id')->unsigned()->default(null);
+            $table->bigInteger('spare_id')->unsigned()->nullable()->default(null);
             $table->foreign('spare_id')->references('id')->on('spares');
             $table->string('defect')->nullable()->default(null);
-            $table->bigInteger('operator_approval')->unsigned()->default(null);
-            $table->foreign('operator_approval')->references('id')->on('users');
-            $table->bigInteger('incharge_approval')->unsigned()->default(null);
-            $table->foreign('incharge_approval')->references('id')->on('users');
-            $table->timestamp('maintenance_completed')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->bigInteger('junior_approval')->unsigned()->nullable()->default(null);
+            $table->foreign('junior_approval')->references('id')->on('users');
+            $table->bigInteger('senior_approval')->unsigned()->nullable()->default(null);
+            $table->foreign('senior_approval')->references('id')->on('users');
+            $table->timestamp('maintenance_completed')->default(null);
             $table->timestamps();
         });
     }
