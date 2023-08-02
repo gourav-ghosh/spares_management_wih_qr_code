@@ -182,17 +182,17 @@ input {
 .pagination > li > span:hover {
     z-index: 3;
     color: #1b263b !important;
-    background-color: #f7941d !important;
-    border-color: #f7941d !important;
+    background-color: linear-gradient(90deg, #01EAFE 0%, #1F7FD9 100%, rgba(0, 0, 0, 1) 100%) !important;
+    border-color: linear-gradient(90deg, #01EAFE 0%, #1F7FD9 100%, rgba(0, 0, 0, 1) 100%) !important;
 }
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #f7941d !important;
-    border-color: #f7941d !important;
+    background-color: linear-gradient(90deg, #01EAFE 0%, #1F7FD9 100%, rgba(0, 0, 0, 1) 100%) !important;
+    border-color: linear-gradient(90deg, #01EAFE 0%, #1F7FD9 100%, rgba(0, 0, 0, 1) 100%) !important;
 }
 .page-item .page-link {
-    color: #f7941d;
+    color: linear-gradient(90deg, #01EAFE 0%, #1F7FD9 100%, rgba(0, 0, 0, 1) 100%);
 
 }
 

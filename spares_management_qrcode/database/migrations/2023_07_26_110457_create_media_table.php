@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('thumbnail_name')->nullable()->default(null);
             $table->string('thumbnail_path')->nullable()->default(null);
-            // $table->enum('for_status', [''])->default('');
+            $table->enum('for_status', ['detail', 'maintenance', 'catalogue', 'defect'])->default('detail');
             $table->enum('media_type', ['image','video'])->nullable()->default(null);
             $table->bigInteger('machine_id')->unsigned()->nullable()->default(null);
             $table->foreign('machine_id')->references('id')->on('machines'); 

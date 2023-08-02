@@ -48,7 +48,7 @@
         </svg>  
     <!-- </a>-->
 </div>
-<div id="nav_options" style=" margin-top: 60px; width: 70%; max-width: 200px; float: right; margin-right: 10px; position: absolute; box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; background: white; right: 0;" hidden>
+<div id="nav_options" style=" margin-top: 60px; width: 70%; max-width: 200px; float: right; margin-right: 10px; position: absolute; box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; background: white; right: 0; z-index: 9999;" hidden>
     @guest
     <a href="/login" style="width: 100%;">
         <div class="nav_items">
@@ -56,7 +56,12 @@
         </div>
     </a>
     @else
-    <a href="/dashboard/machines" style="width: 100%;">
+    <a href="/dashboard" style="width: 100%;">
+        <div class="nav_items">
+            Dashboard
+        </div>
+    </a>
+    <a href="/dashboard/machines/all" style="width: 100%;">
         <div class="nav_items">
             Machines
         </div>

@@ -12,8 +12,19 @@ class Maintenance extends Model
         'machine_id',
         'spare_id',
         'defect',
-        'operator_approval',
-        'incharge_approval',
+        'jumior_approval',
+        'senior_approval',
         'maintenance_completed',
     ];
+
+    
+    public function machine(){
+        return $this->belongsTo(Machines::class, 'machine_id');
+    }
+
+    public function spare(){
+        return $this->belongsTo(Spares::class, 'spare_id');
+    }
+
+    
 }

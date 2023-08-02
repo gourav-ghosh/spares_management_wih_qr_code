@@ -20,4 +20,14 @@ class Media extends Model
         'comment',
         'commented_by',
     ];
+
+    public function machine(){
+        return $this->belongsTo(Machines::class, 'machine_id');
+    }
+
+    public function spare(){
+        return $this->belongsTo(Spares::class, 'spare_id');
+    }
+
+
 }

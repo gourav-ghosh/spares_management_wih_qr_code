@@ -36,19 +36,7 @@ class AuthController extends Controller
                 $user = auth()->user();
                 $request->session()->put('user',$user);
                 // return redirect()->back()->with('message', 'Logged in successfully');
-                return view('qr_test', [
-                    'message' => 'Logged in successfully',
-                ]);
-                // if($user->role !== 'Admin' && $user->role !== 'Dispatch_Manager'){
-                //     return redirect('/manager/dashboard/stage');
-                // }
-                // if($user->role === 'Admin'){
-                //     return redirect('/manager/dashboard');
-                // }
-                // if($user->role === 'Dispatch_Manager'){
-                //     // return redirect('/manager/dashboard');
-                //     return redirect('/manager/orders/filter/po_pendings');
-                // } 
+                return redirect('/dashboard')->with('message', 'Logged in successfully');
             }
             else
             {
@@ -156,6 +144,17 @@ class AuthController extends Controller
         else
         {
             return redirect()->back()->withErrors(['error' => ['You have to log in to add a user']]);
+        }
+    }
+    public function dashboard()
+    {
+        if(Auth::check())
+        {
+            return view('auth.dashboard');
+        }
+        else
+        {
+            return redirect('/login')->withErrors(['error' => ['You have to log in to access the dashboard page']]);
         }
     }
 }
