@@ -12,20 +12,23 @@
         <div>
             <form action="/add_spare" method="post" enctype="multipart/form-data">
                 @csrf
+                @if($spare)
+                <input type="hidden" name="id" value="{{$spare->id}}">
+                @endif
                 <div><span id="customer_style">Spare Id<span style="color: #F72C1D; padding-left: 1px;">*</span></span>
                 </div>
                 <input id="spare_id" name="spare_id" type="text"
-                    placeholder="Enter Spare Id" required>
+                    placeholder="Enter Spare Id" @if($spare) value="{{$spare->spare_id}}" @endif required>
                     
                 <div><span id="customer_style">Spare Name<span style="color: #F72C1D; padding-left: 1px;">*</span></span>
                 </div>
                 <input id="spare_name" name="spare_name" type="text"
-                    placeholder="Enter Spare Name" required>
+                    placeholder="Enter Spare Name" @if($spare) value="{{$spare->spare_name}}" @endif required>
 
                 <div><span id="customer_style">Spare Type<span style="color: #F72C1D; padding-left: 1px;">*</span></span>
                 </div>
                 <input id="spare_type" name="spare_type" type="text"
-                    placeholder="Enter Spare Type" required>
+                    placeholder="Enter Spare Type" @if($spare) value="{{$spare->spare_type}}" @endif required>
 
                     
                 <div><span id="customer_style">Spare Storage Area
@@ -34,15 +37,15 @@
                 </div>
                 <select name="spare_storage" id="spare_storage1" class="spare_storage">
                     <option value="" disabled selected> -- Select Spare Storage Area --</option>
-                    <option value="roll_stand">Roll Stand</option>
-                    <option value="workshop">Workshop Area</option>
-                    <option value="spm">SPM Area</option>
-                    <option value="os_mcl">Oil Storage MCL</option>
-                    <option value="os_ccl">Oil Storage CCL</option>
-                    <option value="mcl_exit">MCL Exit</option>
-                    <option value="jk_bay">JK Bay Area</option>
-                    <option value="de_bay">CCL DE Bay area</option>
-                    <option value="cd_bay">MCL CD Bay area</option>
+                    <option value="roll_stand" @if($spare && $spare->spare_storage == 'roll_stand') selected @endif>Roll Stand</option>
+                    <option value="workshop" @if($spare && $spare->spare_storage == 'workshop') selected @endif>Workshop Area</option>
+                    <option value="spm" @if($spare && $spare->spare_storage == 'spm') selected @endif>SPM Area</option>
+                    <option value="os_mcl" @if($spare && $spare->spare_storage == 'os_mcl') selected @endif>Oil Storage MCL</option>
+                    <option value="os_ccl" @if($spare && $spare->spare_storage == 'os_ccl') selected @endif>Oil Storage CCL</option>
+                    <option value="mcl_exit" @if($spare && $spare->spare_storage == 'mcl_exit') selected @endif>MCL Exit</option>
+                    <option value="jk_bay" @if($spare && $spare->spare_storage == 'jk_bay') selected @endif>JK Bay Area</option>
+                    <option value="de_bay" @if($spare && $spare->spare_storage == 'de_bay') selected @endif>CCL DE Bay area</option>
+                    <option value="cd_bay" @if($spare && $spare->spare_storage == 'cd_bay') selected @endif>MCL CD Bay area</option>
                 </select>
 
                 <div><span id="customer_style">Department<span
@@ -50,9 +53,9 @@
                 </div>
                 <select name="department" id="department1" class="department" required">
                     <option value="" disabled selected> -- Select Department --</option>
-                    <option value="mcl">MCL</option>
-                    <option value="ccl">CCL</option>
-                    <option value="mechanical">Mechanical Maintenance</option>
+                    <option value="mcl" @if($spare && $spare->department == 'mcl') selected @endif>MCL</option>
+                    <option value="ccl" @if($spare && $spare->department == 'ccl') selected @endif>CCL</option>
+                    <option value="mechanical" @if($spare && $spare->department == 'mechanical') selected @endif>Mechanical Maintenance</option>
                 </select>
 
                 
@@ -63,7 +66,7 @@
                     <option value="" disabled selected> Select Parent Machine       --------</option>
                     @if($machines)
                     @foreach($machines as $machine)
-                    <option value="{{$machine->id}}">{{$machine->machine_name}}</option>
+                    <option value="{{$machine->id}}" @if($spare && $spare->parent_machine == $machine->id) selected @endif>{{$machine->machine_name}}</option>
                     @endforeach
                     <option value="other">Not Listed</option>
 
@@ -75,7 +78,7 @@
                 </span>
                 </div>
                 <input id="last_installation_date" name="last_installation_date" type="date"
-                    placeholder="Enter Last Installation Date" >
+                    placeholder="Enter Last Installation Date" @if($spare) value="{{$spare->last_installation_date}}" @endif>
                 <br>
 
                 <div><span id="customer_style">Last Maintenance Date
@@ -83,7 +86,7 @@
                 </span>
                 </div>
                 <input id="last_maintenance_date" name="last_maintenance_date" type="date"
-                    placeholder="Enter Last Maintenance Date" >
+                    placeholder="Enter Last Maintenance Date" @if($spare) value="{{$spare->last_maintenance_date}}" @endif>
                 <br>
                 
                 <div><span id="customer_style">Due Maintenance Date
@@ -91,7 +94,7 @@
                 </span>
                 </div>
                 <input id="due_maintenance_date" name="due_maintenance_date" type="date"
-                    placeholder="Enter Due Maintenance Date" >
+                    placeholder="Enter Due Maintenance Date" @if($spare) value="{{$spare->due_maintenance_date}}" @endif>
                 <br>
                 
                 <div><span id="customer_style">Operation Start Date
@@ -99,7 +102,7 @@
                 </span>
                 </div>
                 <input id="operation_start_date" name="operation_start_date" type="date"
-                    placeholder="Enter Operation Start Date" >
+                    placeholder="Enter Operation Start Date" @if($spare) value="{{$spare->operation_start_date}}" @endif>
                 <br>
                 
                 <div><span id="customer_style"> Description
@@ -108,7 +111,7 @@
                 </div>
                 <textarea name="description" cols="30" rows="4"
                     style=" padding: 10px; color: #000103; border-radius: 6px; width: 90%;"
-                    placeholder="Description of spare." required></textarea>
+                    placeholder="Description of spare." required>@if($spare) {{$spare->description}} @endif</textarea>
 
                 
                 <div style="margin-top: 20px;">
@@ -132,7 +135,7 @@
                 <br>
                 <div style="display: flex; justify-content: center;">
 
-                    <button id="button" type="submit">Add</button>
+                    <button id="button" type="submit">@if($spare) Update @else Add @endif</button>
                 </div>
                 <br><br>
             </form>

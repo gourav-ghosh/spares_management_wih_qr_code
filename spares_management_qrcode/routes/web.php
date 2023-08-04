@@ -35,6 +35,7 @@ Route::get('/add_machine', [MachinesController::class, 'add_machine_get'])->name
 Route::post('/add_machine', [MachinesController::class, 'add_machine_post'])->name('add_machine_post');
 Route::get('/machine/{id}', [MachinesController::class, 'machine_details'])->name('machine_details');
 Route::get('/dashboard/machines/{department}', [MachinesController::class, 'machine_dashboard'])->name('machine_dashboard');
+Route::get('/update_machine/{id}', [MachinesController::class, 'update_machine_get'])->name('update_machine_get');
 
 
 
@@ -43,12 +44,15 @@ Route::get('/add_spare', [SparesController::class, 'add_spare_get'])->name('add_
 Route::post('/add_spare', [SparesController::class, 'add_spare_post'])->name('add_spare_post');
 Route::get('/spare/{id}', [SparesController::class, 'spare_details'])->name('spare_details');
 Route::get('/dashboard/spares', [SparesController::class, 'spare_dashboard'])->name('spare_dashboard');
+Route::get('/update_spare/{id}', [SparesController::class, 'update_spare_get'])->name('update_spare_get');
 
 /* <----------Maintenance Routes------------> */
 Route::get('/add_maintenance', [MaintenanceController::class, 'add_maintenance_get'])->name('add_maintenance_get');
 Route::post('/add_maintenance', [MaintenanceController::class, 'add_maintenance_post'])->name('add_maintenance_post');
 Route::get('/maintenance/{id}', [MaintenanceController::class, 'maintenance_details'])->name('maintenance_details');
 Route::get('/dashboard/maintenance', [MaintenanceController::class, 'maintenance_dashboard'])->name('maintenance_dashboard');
+Route::get('/update_maintenance/{id}', [MaintenanceController::class, 'update_maintenance_get'])->name('update_maintenance_get');
+Route::post('/update_maintenance/{id}', [MaintenanceController::class, 'update_maintenance_post'])->name('update_maintenance_post');
 
 /* <----------Spares Storage Routes------------> */
 Route::get('/dashboard/spares/{place}', [SparesController::class, 'spare_dashboard_storage'])->name('spare_dashboard_storage');

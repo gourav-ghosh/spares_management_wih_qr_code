@@ -35,6 +35,41 @@
         <br>
         <!-- <br> -->
         <div class="mt-2"></div>
+        <a href="/add_machine">
+            <div class="floating-button">
+                <svg width="79" height="78" viewBox="0 0 79 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_24_2)">
+                    <g filter="url(#filter0_d_24_2)">
+                    <path d="M32 0C14.3264 0 0 14.3264 0 32C0 49.6736 14.3264 64 32 64C49.6736 64 64 49.6736 64 32C64 14.3264 49.6736 0 32 0ZM48 35.2H35.2V48H28.8V35.2H16V28.8H28.8V16H35.2V28.8H48V35.2Z" fill="url(#paint0_linear_24_2)"/>
+                    </g>
+                    <path d="M35.2001 16H28.8V48H35.2001V16Z" fill="#F7F6F5"/>
+                    <path d="M48 28.8H16V35.2001H48V28.8Z" fill="#F7F6F5"/>
+                    </g>
+                    <defs>
+                    <filter id="filter0_d_24_2" x="0" y="0" width="79" height="78" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                    <feOffset dx="9" dy="8"/>
+                    <feGaussianBlur stdDeviation="3"/>
+                    <feComposite in2="hardAlpha" operator="out"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_24_2"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_24_2" result="shape"/>
+                    </filter>
+                    <linearGradient id="paint0_linear_24_2" x1="60.5" y1="47.5" x2="5" y2="12" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#1F7FEA" stop-opacity="0.5"/>
+                    <stop offset="1" stop-color="#01EAFE"/>
+                    </linearGradient>
+                    <clipPath id="clip0_24_2">
+                    <rect width="79" height="78" fill="white"/>
+                    </clipPath>
+                    </defs>
+                </svg>       
+            </div>
+        </a>
+
+        <!-- <input type="search" name="search" style="width: 100%; max-width: 415px; padding-left: 40px; font-size: 24px; margin-top: 10px; height: 40px; background-color: #dde2e2; margin-bottom: 5px; border-radius: 10px;"> -->
+
         @if(count($machines)>0)
         @foreach($machines as $machine)
         <div style="margin-bottom:20px;" class="maindiv">
@@ -175,6 +210,15 @@ $(document).ready(function() {
     }, 2000);
 });
 </script>
+
+<style>
+.floating-button {
+    position: fixed;
+    bottom: 30px;
+    right: 13px;
+    z-index: 2;
+}
+</style>
 <style>
     div.scrollmenu {
     /* position: relative; */

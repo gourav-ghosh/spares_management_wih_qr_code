@@ -76,6 +76,12 @@
             Maintenance
         </div>
     </a>
+    
+    <a href="/dashboard/spares/workshop" style="width: 100%; ">
+        <div class="nav_items">
+            Spares Storage
+        </div>
+    </a>
     @if(Auth::user()->role != 'associate')
     <a href="/add_user" style="width: 100%;">
         <div class="nav_items">

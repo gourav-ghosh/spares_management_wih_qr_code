@@ -21,6 +21,7 @@ class SparesController extends Controller
             // return $machines;
             return view('spares.add_spare', [
                 'machines' => $machines,
+                'spare' => null
             ]);
         }
         else
@@ -32,6 +33,7 @@ class SparesController extends Controller
     {
         if(Auth::check())
         {
+            $search = $request->get('search');
             if($request->input('rows_per_page')){
                 $per_page = $request->input('rows_per_page');
                 if($per_page != Session::get('rows_per_page')){
@@ -41,7 +43,17 @@ class SparesController extends Controller
                 $per_page = 10;
             }
             $spares_count = Spares::all()->count();
-            $spares = Spares::with(['medias'])->orderBy('created_at')->paginate($per_page);
+            $spares = Spares::with(['medias'])
+                ->orderBy('created_at')
+                ->when($search, function ($query) use ($search) {
+                    $query->where('spare_id', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('spare_name', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('spare_type', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('department', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('description', 'like', '%'.strtolower($search).'%');
+                        // ->orWhere('', 'like', '%'.strtolower($search).'%');
+                })
+                ->paginate($per_page);
             
             if($request){
                 Session::put('filters', $request->all());
@@ -51,6 +63,7 @@ class SparesController extends Controller
                 'spares' => $spares,
                 'spares_count' => $spares_count,
                 'per_page' => $per_page,
+                'search' => $search,
                 'place' => null,
                 'filters' => $request->all()
             ]);
@@ -64,44 +77,88 @@ class SparesController extends Controller
     {
         if(Auth::check())
         {
-            $spare = new Spares;
-            $spare->spare_id = $request->get('spare_id');
-            $spare->spare_name = $request->get('spare_name');
-            $spare->spare_type = $request->get('spare_type');
-            $spare->department = $request->get('department');
-            if($request->get('spare_storage'))
+            if($request->get('id'))
             {
-                $spare->spare_storage = $request->get('spare_storage');
-            }
-            if($request->get('parent_machine'))
-            {
-                if($request->get('parent_machine') != 'other')
+                $spare = Spares::where('id', $request->get('id'))->first();
+                $spare->spare_id = $request->get('spare_id');
+                $spare->spare_name = $request->get('spare_name');
+                $spare->spare_type = $request->get('spare_type');
+                $spare->department = $request->get('department');
+                if($request->get('spare_storage'))
                 {
-                    $spare->parent_machine = $request->get('parent_machine');
+                    $spare->spare_storage = $request->get('spare_storage');
                 }
+                if($request->get('parent_machine'))
+                {
+                    if($request->get('parent_machine') != 'other')
+                    {
+                        $spare->parent_machine = $request->get('parent_machine');
+                    }
+                }
+                if($request->get('last_installation_date'))
+                {
+                    $spare->last_installation_date = $request->get('last_installation_date');
+                }
+                if($request->get('last_maintenance_date'))
+                {
+                    $spare->last_maintenance_date = $request->get('last_maintenance_date');
+                }
+                if($request->get('due_maintenance_date'))
+                {
+                    $spare->due_maintenance_date = $request->get('due_maintenance_date');
+                }
+                if($request->get('operation_start_date'))
+                {
+                    $spare->operation_start_date = $request->get('operation_start_date');
+                }
+                
+                if($request->get('description'))
+                {
+                    $spare->description = $request->get('description');
+                }
+                $spare->save();
             }
-            if($request->get('last_installation_date'))
+            else
             {
-                $spare->last_installation_date = $request->get('last_installation_date');
+                $spare = new Spares;
+                $spare->spare_id = $request->get('spare_id');
+                $spare->spare_name = $request->get('spare_name');
+                $spare->spare_type = $request->get('spare_type');
+                $spare->department = $request->get('department');
+                if($request->get('spare_storage'))
+                {
+                    $spare->spare_storage = $request->get('spare_storage');
+                }
+                if($request->get('parent_machine'))
+                {
+                    if($request->get('parent_machine') != 'other')
+                    {
+                        $spare->parent_machine = $request->get('parent_machine');
+                    }
+                }
+                if($request->get('last_installation_date'))
+                {
+                    $spare->last_installation_date = $request->get('last_installation_date');
+                }
+                if($request->get('last_maintenance_date'))
+                {
+                    $spare->last_maintenance_date = $request->get('last_maintenance_date');
+                }
+                if($request->get('due_maintenance_date'))
+                {
+                    $spare->due_maintenance_date = $request->get('due_maintenance_date');
+                }
+                if($request->get('operation_start_date'))
+                {
+                    $spare->operation_start_date = $request->get('operation_start_date');
+                }
+                
+                if($request->get('description'))
+                {
+                    $spare->description = $request->get('description');
+                }
+                $spare->save();
             }
-            if($request->get('last_maintenance_date'))
-            {
-                $spare->last_maintenance_date = $request->get('last_maintenance_date');
-            }
-            if($request->get('due_maintenance_date'))
-            {
-                $spare->due_maintenance_date = $request->get('due_maintenance_date');
-            }
-            if($request->get('operation_start_date'))
-            {
-                $spare->operation_start_date = $request->get('operation_start_date');
-            }
-            
-            if($request->get('description'))
-            {
-                $spare->description = $request->get('description');
-            }
-            $spare->save();
             $spare_detail=Spares::where('spare_id', $request->get('spare_id'))->first();
             $medias = $request->media;
             if($medias)
@@ -155,7 +212,14 @@ class SparesController extends Controller
                     }
                 }
             }
-            return redirect('/spare/'.$spare_detail->id)->with('message', 'Spare details added successfully');
+            if($request->get('id'))
+            {
+                return redirect('/spare/'.$spare_detail->id)->with('message', 'Spare details updated successfully');
+            }
+            else
+            {
+                return redirect('/spare/'.$spare_detail->id)->with('message', 'Spare details added successfully');
+            }
         }
         else
         {
@@ -211,5 +275,27 @@ class SparesController extends Controller
             return redirect('/login')->back()->withErrors(['error' => ['Login to add access spares storage dashboard']]);
         }
     }
-
+    public function update_spare_get($id)
+    {
+        if(Auth::check())
+        {
+            $spare = Spares::where('id', $id)->first();
+            $machines = Machines::orderBy('machine_name')->get();
+            if($spare)
+            {
+                return view('spares.add_spare', [
+                    'spare' => $spare,
+                    'machines' => $machines
+                ]);
+            }
+            else
+            {
+                return redirect('/add_spare');
+            }
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['eror' => ["You don't have the access to edit the details."]]);
+        }
+    }
 }

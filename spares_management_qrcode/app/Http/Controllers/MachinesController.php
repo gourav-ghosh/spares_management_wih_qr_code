@@ -17,7 +17,9 @@ class MachinesController extends Controller
     {
         if (Auth::check())
         {
-            return view('machines.add_machine');
+            return view('machines.add_machine',[
+                'machine' => null
+            ]);
         }
         else
         {
@@ -28,6 +30,11 @@ class MachinesController extends Controller
     {
         if(Auth::check())
         {
+            $search = $request->get('search');
+            if($search)
+            {
+                $department = 'all';
+            }
             if($department == 'all')
             {
                 $department_options = ['mcl', 'ccl', 'mechanical_maintenance'];
@@ -45,7 +52,18 @@ class MachinesController extends Controller
                 $per_page = 10;
             }
             $machines_count = Machines::all()->count();
-            $machines = Machines::with(['medias'])->whereIn('department', $department_options)->orderBy('created_at')->paginate($per_page);
+            $machines = Machines::with(['medias'])
+                ->whereIn('department', $department_options)
+                ->when($search, function ($query) use ($search) {
+                    $query->where('machine_id', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('machine_name', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('machine_type', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('department', 'like', '%'.strtolower($search).'%')
+                        ->orWhere('description', 'like', '%'.strtolower($search).'%');
+                        // ->orWhere('', 'like', '%'.strtolower($search).'%');
+                })
+                ->orderBy('created_at', 'DESC')
+                ->paginate($per_page);
             
             if($request){
                 Session::put('filters', $request->all());
@@ -55,6 +73,7 @@ class MachinesController extends Controller
                 'machines' => $machines,
                 'machines_count' => $machines_count,
                 'per_page' => $per_page,
+                'search' => $search,
                 'department' => $department,
                 'filters' => $request->all()
             ]);
@@ -66,30 +85,59 @@ class MachinesController extends Controller
     }
     public function add_machine_post(Request $request)
     {
+        // return $request;
         if(Auth::check())
         {
-            $machine = new Machines;
-            $machine->machine_id = $request->get('machine_id');
-            $machine->machine_name = $request->get('machine_name');
-            $machine->machine_type = $request->get('machine_type');
-            $machine->department = $request->get('department');
-            if($request->get('last_maintenance_date'))
+            if($request->get('id'))
             {
-                $machine->last_maintenance_date = $request->get('last_maintenance_date');
+                $machine = Machines::where('id', $request->get('id'))->first();
+                $machine->machine_id = $request->get('machine_id');
+                $machine->machine_name = $request->get('machine_name');
+                $machine->machine_type = $request->get('machine_type');
+                $machine->department = $request->get('department');
+                if($request->get('last_maintenance_date'))
+                {
+                    $machine->last_maintenance_date = $request->get('last_maintenance_date');
+                }
+                if($request->get('due_maintenance_date'))
+                {
+                    $machine->due_maintenance_date = $request->get('due_maintenance_date');
+                }
+                if($request->get('operation_start_date'))
+                {
+                    $machine->operation_start_date = $request->get('operation_start_date');
+                }
+                if($request->get('description'))
+                {
+                    $machine->description = $request->get('description');
+                }
+                $machine->save();
             }
-            if($request->get('due_maintenance_date'))
+            else
             {
-                $machine->due_maintenance_date = $request->get('due_maintenance_date');
+                $machine = new Machines;
+                $machine->machine_id = $request->get('machine_id');
+                $machine->machine_name = $request->get('machine_name');
+                $machine->machine_type = $request->get('machine_type');
+                $machine->department = $request->get('department');
+                if($request->get('last_maintenance_date'))
+                {
+                    $machine->last_maintenance_date = $request->get('last_maintenance_date');
+                }
+                if($request->get('due_maintenance_date'))
+                {
+                    $machine->due_maintenance_date = $request->get('due_maintenance_date');
+                }
+                if($request->get('operation_start_date'))
+                {
+                    $machine->operation_start_date = $request->get('operation_start_date');
+                }
+                if($request->get('description'))
+                {
+                    $machine->description = $request->get('description');
+                }
+                $machine->save();
             }
-            if($request->get('operation_start_date'))
-            {
-                $machine->operation_start_date = $request->get('operation_start_date');
-            }
-            if($request->get('description'))
-            {
-                $machine->description = $request->get('description');
-            }
-            $machine->save();
             $machine_detail=Machines::where('machine_id', $request->get('machine_id'))->first();
             $medias = $request->media;
             if($medias)
@@ -143,7 +191,14 @@ class MachinesController extends Controller
                     }
                 }
             }
-            return redirect('/machine/'.$machine_detail->id)->with('message', 'Machine details added successfully');
+            if($request->get('id'))
+            {
+                return redirect('/machine/'.$machine_detail->id)->with('message', 'Machine details updated successfully');
+            }
+            else
+            {
+                return redirect('/machine/'.$machine_detail->id)->with('message', 'Machine details added successfully');
+            }
         }
         else
         {
@@ -165,6 +220,27 @@ class MachinesController extends Controller
         else
         {
             return redirect()->back()->withErrors(['eror' => ['Machine details not found, please contact your senior or admin.']]);
+        }
+    }
+    public function update_machine_get($id)
+    {
+        if(Auth::check())
+        {
+            $machine = Machines::where('id', $id)->first();
+            if($machine)
+            {
+                return view('machines.add_machine', [
+                    'machine' => $machine,
+                ]);
+            }
+            else
+            {
+                return redirect('/add_machine');
+            }
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['eror' => ["You don't have the access to edit the details."]]);
         }
     }
 }

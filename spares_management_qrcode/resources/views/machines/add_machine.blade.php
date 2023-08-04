@@ -12,20 +12,23 @@
         <div>
             <form action="/add_machine" method="post" enctype="multipart/form-data">
                 @csrf
+                @if($machine)
+                <input type="hidden" name="id" value="{{$machine->id}}">
+                @endif
                 <div><span id="customer_style">Machine Id<span style="color: #F72C1D; padding-left: 1px;">*</span></span>
                 </div>
                 <input id="machine_id" name="machine_id" type="text"
-                    placeholder="Enter Machine Id" required>
+                    placeholder="Enter Machine Id" @if($machine) value="{{$machine->machine_id}}" @endif required>
                     
                 <div><span id="customer_style">Machine Name<span style="color: #F72C1D; padding-left: 1px;">*</span></span>
                 </div>
                 <input id="machine_name" name="machine_name" type="text"
-                    placeholder="Enter Machine Name" required>
+                    placeholder="Enter Machine Name" @if($machine) value="{{$machine->machine_name}}" @endif required>
 
                 <div><span id="customer_style">Machine Type<span style="color: #F72C1D; padding-left: 1px;">*</span></span>
                 </div>
                 <input id="machine_type" name="machine_type" type="text"
-                    placeholder="Enter Machine Type" required>
+                    placeholder="Enter Machine Type" @if($machine) value="{{$machine->machine_type}}" @endif required>
 
                     
                 <div><span id="customer_style">Department<span
@@ -33,9 +36,9 @@
                 </div>
                 <select name="department" id="department1" class="department" required">
                     <option value="" disabled selected> -- Select Department --</option>
-                    <option value="mcl">MCL</option>
-                    <option value="ccl">CCL</option>
-                    <option value="mechanical">Mechanical Maintenance</option>
+                    <option value="mcl" @if($machine && $machine->department == 'mcl') selected @endif>MCL</option>
+                    <option value="ccl" @if($machine && $machine->department == 'ccl') selected @endif>CCL</option>
+                    <option value="mechanical" @if($machine && $machine->department == 'mechanical') selected @endif>Mechanical Maintenance</option>
                 </select>
                 
                 <div><span id="customer_style">Last Maintenance Date
@@ -43,7 +46,7 @@
                 </span>
                 </div>
                 <input id="last_maintenance_date" name="last_maintenance_date" type="date"
-                    placeholder="Enter Last Maintenance Date" >
+                    placeholder="Enter Last Maintenance Date" @if($machine) value="{{$machine->last_maintenance_date}}" @endif>
                 <br>
                 
                 <div><span id="customer_style">Due Maintenance Date
@@ -51,7 +54,7 @@
                 </span>
                 </div>
                 <input id="due_maintenance_date" name="due_maintenance_date" type="date"
-                    placeholder="Enter Due Maintenance Date" >
+                    placeholder="Enter Due Maintenance Date" @if($machine) value="{{$machine->due_maintenance_date}}" @endif>
                 <br>
                 
                 <div><span id="customer_style">Operation Start Date
@@ -59,7 +62,7 @@
                 </span>
                 </div>
                 <input id="operation_start_date" name="operation_start_date" type="date"
-                    placeholder="Enter Operation Start Date" >
+                    placeholder="Enter Operation Start Date" @if($machine) value="{{$machine->operation_start_date}}" @endif>
                 <br>
                 
                 <div><span id="customer_style"> Description
@@ -68,7 +71,7 @@
                 </div>
                 <textarea name="description" cols="30" rows="4"
                     style=" padding: 10px; color: #000103; border-radius: 6px; width: 90%;"
-                    placeholder="Description of spare." required></textarea>
+                    placeholder="Description of machine."  required>@if($machine){{$machine->description}} @endif</textarea>
 
                 
                 <div style="margin-top: 20px;">
@@ -91,8 +94,7 @@
                 </div>
                 <br>
                 <div style="display: flex; justify-content: center;">
-
-                    <button id="button" type="submit">Add</button>
+                    <button id="button" type="submit">@if($machine) Update @else Add @endif</button>
                 </div>
                 <br>
                 <br>
