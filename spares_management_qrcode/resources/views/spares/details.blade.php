@@ -1,14 +1,13 @@
 
 @extends('layout.app')
 @section('content')
-<div id="qrcode_print" style="width: 288px; height: 384px; margin-top: 42px; margin-bottom: 42px;margin-left: 15px; margin-right: 15px;" hidden>
+<div id="qrcode_print" style="width: 258px; height: 300px; margin-top: 42px; margin-bottom: 42px;margin-left: 15px; margin-right: 15px;">
     <div id="qrcode">
     </div>
     <div style="text-align: center; font-size: 20px; font-weight: 600; margin-top: 30px;">
         ID: {{$spare_detail->spare_id}}
     </div>
 </div>
-
 <!-- <div style="display: flex; justify-content: center; gap: 40px;" hidden> -->
 </div>
 <div class="container-fluid" style="padding-right: var(--bs-gutter-x,0rem); padding-left: var(--bs-gutter-x,0rem); margin-top: -50px;">
@@ -60,7 +59,7 @@
             <u> ID: {{$spare_detail->spare_id}} </u>
         </div>
         @if(count($spare_detail->medias)>0)
-        <div style="display: flex; justify-content: center; align-items: center; width: 95%; aspect-ratio: 1/1; margin-left: 2%;">
+        <div style="display: flex; justify-content: center; align-items: center; width: 95%; aspect-ratio: 1/0.70; margin-left: 2%;">
             <img src="{{$spare_detail->medias[0]->path}}" alt="" srcset="" width="100%" height="100%">
         </div>
         @endif
@@ -172,8 +171,26 @@
             </div>
         </div>
 
-        <div style="font-size: 24px; font-weight: 600; margin-left: 3%;">
-            <u> Details </u>
+        
+        @if($spare_detail->department && $spare_detail->department == 'mcl')
+        <div style="text-align: center; font-size: 24px; font-weight: 600; color: #1171EA;">
+            <u> MCL General Layout </u>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; width: 95%; margin-left: 2%; margin-top: 20px; margin-bottom: 25px;">
+            <img src="\dist\assets\mcl_general_layout.png" alt="" srcset="" width="100%" height="100%" class="gallery-item" val="\dist\assets\mcl_general_layout.png" media_type="image">
+        </div>
+        @endif
+        <div style="font-size: 24px; font-weight: 600; margin-left: 3%; display: flex; justify-content: space-between;">
+            <div>
+                <u> Details </u>
+            </div>
+            @if(Auth::check())
+            <a href="/update_spare/{{$spare_detail->id}}">
+                <div style="padding:0 8px;height: 28px; background-color: #0D1B2A; color: white; display: flex; justify-content: center; align-items: center; font-size: 16px; border-radius: 5px; cursor: pointer;">
+                    Update
+                </div>
+            </a>
+            @endif
         </div>
         <div style="font-size: 18px; letter-spacing: 2px; margin-left: 20px; word-spacing: 10px; margin-top: 10px;">
             <b>Name: </b> @if($spare_detail->spare_name) {{$spare_detail->spare_name}} @else N.A. @endif
@@ -349,6 +366,14 @@
 .modal-header {
     padding: 0.2rem 0.5rem;
 }
+#qrcode_print{
+    display: none;
+}
+@media print{
+    #qrcode_print{
+        display: block;
+    }
+}
 </style>
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <!-- <script src="https://cdn.rawgit.com/papnkukn/qrcode-svg/gh-pages/qrcode.min.js"></script>    -->
@@ -368,7 +393,6 @@ function generateQRCode(data, elementId) {
             // },
         }
     );
-    console.log(qrElement);
     qrElement.innerHTML = qr.createImgTag();
 }
 // function generateQRCode(data, elementId) {
@@ -397,13 +421,17 @@ function generateQRCode(data, elementId) {
 generateQRCode_parent();
 function printQR()
 {
-    var content = document.getElementById('qrcode_print').innerHTML;
-    var printWindow = window.open('', '', 'height=500,width=800');
-    printWindow.document.write('<html><head><title>Print</title></head><body>');
-    printWindow.document.write(content);
-    printWindow.document.write('</body></html>');
+    var content = document.getElementById('qrcode_print');
+    var cloneDiv = content.cloneNode(true);
+    var tempContainer = document.createElement('div');
+    tempContainer.appendChild(cloneDiv);
+    tempContainer.hidden=false;
+    var printWindow = window.open('', '');
+    printWindow.document.write('<html><body></body></html>');
+    printWindow.document.body.appendChild(tempContainer);
     printWindow.document.close();
     printWindow.print();
+
     // document.getElementById('qrcode').innerHTML = '';
 }
 // Example usage

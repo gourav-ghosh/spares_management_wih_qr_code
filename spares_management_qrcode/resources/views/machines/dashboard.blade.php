@@ -68,6 +68,8 @@
             </div>
         </a>
 
+        <!-- <input type="search" name="search" style="width: 100%; max-width: 415px; padding-left: 40px; font-size: 24px; margin-top: 10px; height: 40px; background-color: #dde2e2; margin-bottom: 5px; border-radius: 10px;"> -->
+
         @if(count($machines)>0)
         @foreach($machines as $machine)
         <div style="margin-bottom:20px;" class="maindiv">
@@ -241,7 +243,7 @@ $(document).ready(function() {
     padding: 8px 10px;
     background-color: #D9D9D9;
     border-radius: 10px;
-    margin: 8px 4px 20px 4px;
+    margin: 8px 4px 8px 4px;
 
 }
 

@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('content')
-<div id="qrcode_print" style="width: 288px; height: 384px; margin-top: 42px; margin-bottom: 42px;margin-left: 15px; margin-right: 15px;">
+<div id="qrcode_print" style="width: 258px; height: 300px; margin-top: 42px; margin-bottom: 42px;margin-left: 15px; margin-right: 15px;">
     <div id="qrcode">
     </div>
     <div style="text-align: center; font-size: 20px; font-weight: 600; margin-top: 30px;">
@@ -57,8 +57,8 @@
             <u> ID: {{$machine_detail->machine_id}} </u>
         </div>
         @if(count($machine_detail->medias)>0)
-        <div style="display: flex; justify-content: center; align-items: center; width: 95%; aspect-ratio: 1/1; margin-left: 2%;">
-            <img src="{{$machine_detail->medias[0]->path}}" alt="" srcset="" width="100%" height="100%">
+        <div style="display: flex; justify-content: center; align-items: center; width: 95%; aspect-ratio: 1/0.70; margin-left: 2%;">
+            <img src="{{$machine_detail->medias[0]->path}}" alt="" srcset="" width="100%" height="100%" class="gallery-item" val="{{$machine_detail->medias[0]->path}}" media_type="image">
         </div>
         @endif
 
@@ -171,9 +171,25 @@
                 </div>
             </div>
         </div>
-
-        <div style="font-size: 24px; font-weight: 600; margin-left: 3%;">
-            <u> Details </u>
+        @if($machine_detail->department && $machine_detail->department == 'mcl')
+        <div style="text-align: center; font-size: 24px; font-weight: 600; color: #1171EA;">
+            <u> MCL General Layout </u>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; width: 95%; margin-left: 2%; margin-top: 20px; margin-bottom: 25px;">
+            <img src="\dist\assets\mcl_general_layout.png" alt="" srcset="" width="100%" height="100%" class="gallery-item" val="\dist\assets\mcl_general_layout.png" media_type="image">
+        </div>
+        @endif
+        <div style="font-size: 24px; font-weight: 600; margin-left: 3%; display: flex; justify-content: space-between;">
+            <div>
+                <u> Details </u>
+            </div>
+            @if(Auth::check())
+            <a href="/update_machine/{{$machine_detail->id}}">
+                <div style="padding:0 8px;height: 28px; background-color: #0D1B2A; color: white; display: flex; justify-content: center; align-items: center; font-size: 16px; border-radius: 5px; cursor: pointer;">
+                    Update
+                </div>
+            </a>
+            @endif
         </div>
         <div style="font-size: 18px; letter-spacing: 2px; margin-left: 20px; word-spacing: 10px; margin-top: 10px;">
             <b>Name: </b> @if($machine_detail->machine_name) {{$machine_detail->machine_name}} @else N.A. @endif
@@ -341,62 +357,38 @@
     }
 }
 </style>
+<style>
+    @page {
+      margin: 0;
+    }
+    @media print {
+      footer {
+        display: none;
+        position: fixed;
+        bottom: 0;
+      }
+      header {
+        display: none;
+        position: fixed;
+        top: 0;
+      }
+    }
+    </style>
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <!-- <script src="https://cdn.rawgit.com/papnkukn/qrcode-svg/gh-pages/qrcode.min.js"></script>    -->
 <script>
 function generateQRCode(data, elementId) {
-    var logoUrl = '/dist/assets/logo.png';
     var qr = new QRCode(
         document.getElementById(elementId),
         {
             text: data,
             width: 250,
             height: 250,
-            // logo: {
-            //     src: '/dist/assets/logo.png',
-            //     logoSize: 0.2, // Adjust the size of the logo (percentage of the QR code size)
-            //     borderSize: 4, // Adjust the border size around the logo
-            // },
         }
     );
-    console.log(qrElement);
     qrElement.innerHTML = qr.createImgTag();
 }
-// function generateQRCode(data, elementId) {
-//     var qrCode = new QRCode(document.getElementById(elementId), {
-//         text: data,
-//         width: 256,
-//         height: 256,
-//     });
-
-//     return qrCode;
-// }
-
-// function addLogoToQRCode(qrCode, logoUrl) {
-//     var svg = qrCode._htOption.container.querySelector("svg");
-//     var logoSize = qrCode._htOption.width * 0.2; // Adjust the logo size as a percentage of QR code width
-
-//     var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-//     image.setAttributeNS(null, "href", logoUrl);
-//     image.setAttributeNS(null, "width", logoSize);
-//     image.setAttributeNS(null, "height", logoSize);
-//     image.setAttributeNS(null, "x", (qrCode._htOption.width - logoSize) / 2); // Center the logo horizontally
-//     image.setAttributeNS(null, "y", (qrCode._htOption.height - logoSize) / 2); // Center the logo vertically
-
-//     svg.appendChild(image);
-// }
 generateQRCode_parent();
-// function printQR()
-// {
-//     var content = document.getElementById('qrcode_print').innerHTML;
-//     var printWindow = window.open('', '', 'height=500,width=800');
-//     printWindow.document.write('<html><head><title>Print</title></head><body>');
-//     printWindow.document.write(content);
-//     printWindow.document.write('</body></html>');
-//     printWindow.document.close();
-//     printWindow.print();
-//     // document.getElementById('qrcode').innerHTML = '';
-// }
 
 function printQR()
 {

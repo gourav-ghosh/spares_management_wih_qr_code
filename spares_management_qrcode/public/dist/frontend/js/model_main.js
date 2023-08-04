@@ -7,7 +7,7 @@ document.addEventListener("click",function (e){
             document.querySelector(".modal-img").src = src;
             document.getElementById("media_img").style.display = "block";
             document.getElementById("media_vid").style.display = "none";
-            document.getElementById("exampleModalLabel").textContent = "Image Proof";
+            document.getElementById("exampleModalLabel").textContent = "Image";
       }
 
       if(media_type == "video"){
@@ -15,7 +15,7 @@ document.addEventListener("click",function (e){
             document.querySelector(".modal-vid").src = src;
             document.getElementById("media_img").style.display = "none";
             document.getElementById("media_vid").style.display = "block";
-            document.getElementById("exampleModalLabel").textContent = "Video Proof";
+            document.getElementById("exampleModalLabel").textContent = "Video";
       }
 
       const myModal = new bootstrap.Modal(document.getElementById('gallery-modal'));
