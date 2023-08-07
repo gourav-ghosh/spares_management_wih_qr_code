@@ -24,7 +24,5 @@ class Maintenance extends Model
 
     public function spare(){
         return $this->belongsTo(Spares::class, 'spare_id');
-    }
-
-    
+    }    
 }
