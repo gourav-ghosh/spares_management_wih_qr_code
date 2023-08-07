@@ -13,6 +13,7 @@ class Media extends Model
         'path',
         'thumbnail_name',
         'thumbnail_path',
+        'for_status',
         'media_type',
         'machine_id',
         'spare_id',
