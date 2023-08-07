@@ -53,7 +53,7 @@
 
             <!-- <div style="height:100px"></div> -->
 
-            <!-- @include('layout.footer') -->
+            @include('layout.footer')
         </div>
     </div>
 
