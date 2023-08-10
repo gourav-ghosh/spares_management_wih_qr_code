@@ -29,6 +29,6 @@ Edit .env file for your Spares management app information.
 composer install
 php artisan key:generate
 php artisan config:cache
-php artisan migrate:refresh --seed
+php artisan migrate --seed
 php artisan serve
 ```
