@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -19,18 +18,19 @@ return new class extends Migration
             $table->string('thumbnail_name')->nullable()->default(null);
             $table->string('thumbnail_path')->nullable()->default(null);
             $table->enum('for_status', ['detail', 'maintenance', 'catalogue', 'defect'])->default('detail');
-            $table->enum('media_type', ['image','video'])->nullable()->default(null);
+            $table->enum('media_type', ['image', 'video'])->nullable()->default(null);
             $table->bigInteger('machine_id')->unsigned()->nullable()->default(null);
-            $table->foreign('machine_id')->references('id')->on('machines'); 
+            $table->foreign('machine_id')->references('id')->on('machines');
             $table->bigInteger('spare_id')->unsigned()->nullable()->default(null);
-            $table->foreign('spare_id')->references('id')->on('spares'); 
-
+            $table->foreign('spare_id')->references('id')->on('spares');
+            $table->bigInteger('tool_id')->unsigned()->nullable()->default(null);
+            $table->foreign('tool_id')->references('id')->on('tools');
             $table->bigInteger('created_by')->unsigned()->nullable()->default(null);
-            $table->foreign('created_by')->references('id')->on('users'); 
+            $table->foreign('created_by')->references('id')->on('users');
             $table->text('comment')->nullable()->default(null);
             $table->bigInteger('commented_by')->unsigned()->nullable()->default(null);
             $table->foreign('commented_by')->references('id')->on('users');
-            
+
             $table->timestamps();
         });
     }

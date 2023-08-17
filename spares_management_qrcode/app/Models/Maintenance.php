@@ -17,12 +17,14 @@ class Maintenance extends Model
         'maintenance_completed',
     ];
 
-    
-    public function machine(){
+
+    public function machine()
+    {
         return $this->belongsTo(Machines::class, 'machine_id');
     }
 
-    public function spare(){
+    public function spare()
+    {
         return $this->belongsTo(Spares::class, 'spare_id');
-    }    
+    }
 }

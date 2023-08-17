@@ -312,7 +312,7 @@
 </style>
 <style>
 .add_machine_bg{
-    background-image: url('/dist/assets/add_machine_bg.jpg');
+    background-image: url('/dist/assets/add_machine_bg1.png');
 
     /* Optional background properties */
     background-size: cover; /* Adjust the size of the image to cover the entire div */

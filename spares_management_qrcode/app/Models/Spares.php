@@ -22,14 +22,17 @@ class Spares extends Model
         'operation_start_date',
     ];
 
-    public function medias(){
+    public function medias()
+    {
         return $this->hasMany(Media::class, 'spare_id');
     }
 
-    public function maintenances(){
+    public function maintenances()
+    {
         return $this->hasMany(Maintenance::class, 'spare_id')->orderBy('created_at', 'DESC');
     }
-    public function parent_machines(){
+    public function parent_machines()
+    {
         return $this->hasMany(Machines::class, 'id');
     }
 }

@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MachinesController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\SparesController;
+use App\Http\Controllers\ToolsController;
+use App\Http\Controllers\SatuatoryComponentsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +48,25 @@ Route::get('/spare/{id}', [SparesController::class, 'spare_details'])->name('spa
 Route::get('/dashboard/spares', [SparesController::class, 'spare_dashboard'])->name('spare_dashboard');
 Route::get('/update_spare/{id}', [SparesController::class, 'update_spare_get'])->name('update_spare_get');
 
+
+
+/* <----------tools Routes------------> */
+Route::get('/add_tool', [ToolsController::class, 'add_tool_get'])->name('add_tool_get');
+Route::post('/add_tool', [ToolsController::class, 'add_tool_post'])->name('add_tool_post');
+Route::get('/tool/{id}', [ToolsController::class, 'tool_details'])->name('tool_details');
+Route::get('/dashboard/tools', [ToolsController::class, 'tool_dashboard'])->name('tool_dashboard');
+Route::get('/update_tool/{id}', [ToolsController::class, 'update_tool_get'])->name('update_tool_get');
+
+
+
+/* <----------Satuatory Routes------------> */
+Route::get('/add_satuatory', [SatuatoryComponentsController::class, 'add_satuatory_get'])->name('add_satuatory_get');
+Route::post('/add_satuatory', [SatuatoryComponentsController::class, 'add_satuatory_post'])->name('add_satuatory_post');
+Route::get('/satuatory/{id}', [SatuatoryComponentsController::class, 'satuatory_details'])->name('satuatory_details');
+Route::get('/dashboard/satuatories', [SatuatoryComponentsController::class, 'satuatory_dashboard'])->name('satuatory_dashboard');
+Route::get('/update_satuatory/{id}', [SatuatoryComponentsController::class, 'update_satuatory_get'])->name('update_satuatory_get');
+
+
 /* <----------Maintenance Routes------------> */
 Route::get('/add_maintenance', [MaintenanceController::class, 'add_maintenance_get'])->name('add_maintenance_get');
 Route::post('/add_maintenance', [MaintenanceController::class, 'add_maintenance_post'])->name('add_maintenance_post');
@@ -58,6 +79,6 @@ Route::post('/update_maintenance/{id}', [MaintenanceController::class, 'update_m
 Route::get('/dashboard/spares/{place}', [SparesController::class, 'spare_dashboard_storage'])->name('spare_dashboard_storage');
 
 
-Route::get('/test', function () {
-    return view('qr_test');
-});
+// Route::get('/test', function () {
+//     return view('qr_test');
+// });

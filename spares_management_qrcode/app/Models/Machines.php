@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Machines extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'machine_id',
         'machine_name',
@@ -20,15 +20,18 @@ class Machines extends Model
         'operation_start_date',
     ];
 
-    public function medias(){
+    public function medias()
+    {
         return $this->hasMany(Media::class, 'machine_id');
     }
 
-    public function maintenances(){
+    public function maintenances()
+    {
         return $this->hasMany(Maintenance::class, 'machine_id')->orderBy('created_at', 'DESC');
     }
 
-    public function spares(){
+    public function spares()
+    {
         return $this->belongsTo(Spares::class, 'parent_machine');
     }
 }

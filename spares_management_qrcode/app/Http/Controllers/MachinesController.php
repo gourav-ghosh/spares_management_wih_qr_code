@@ -15,57 +15,49 @@ class MachinesController extends Controller
 {
     public function add_machine_get(Request $request)
     {
-        if (Auth::check())
-        {
-            return view('machines.add_machine',[
+        if (Auth::check()) {
+            return view('machines.add_machine', [
                 'machine' => null
             ]);
-        }
-        else
-        {
+        } else {
             return redirect()->back()->withErrors(['error' => ['Login to add a new machine']]);
         }
     }
     public function machine_dashboard(Request $request, $department)
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $search = $request->get('search');
-            if($search)
-            {
+            if ($search) {
                 $department = 'all';
             }
-            if($department == 'all')
-            {
+            if ($department == 'all') {
                 $department_options = ['mcl', 'ccl', 'mechanical_maintenance'];
-            }
-            else
-            {
+            } else {
                 $department_options[] = $department;
             }
-            if($request->input('rows_per_page')){
+            if ($request->input('rows_per_page')) {
                 $per_page = $request->input('rows_per_page');
-                if($per_page != Session::get('rows_per_page')){
+                if ($per_page != Session::get('rows_per_page')) {
                     $request['page'] = "1";
                 }
-            } else{
+            } else {
                 $per_page = 10;
             }
             $machines_count = Machines::all()->count();
             $machines = Machines::with(['medias'])
                 ->whereIn('department', $department_options)
                 ->when($search, function ($query) use ($search) {
-                    $query->where('machine_id', 'like', '%'.strtolower($search).'%')
-                        ->orWhere('machine_name', 'like', '%'.strtolower($search).'%')
-                        ->orWhere('machine_type', 'like', '%'.strtolower($search).'%')
-                        ->orWhere('department', 'like', '%'.strtolower($search).'%')
-                        ->orWhere('description', 'like', '%'.strtolower($search).'%');
-                        // ->orWhere('', 'like', '%'.strtolower($search).'%');
+                    $query->where('machine_id', 'like', '%' . strtolower($search) . '%')
+                        ->orWhere('machine_name', 'like', '%' . strtolower($search) . '%')
+                        ->orWhere('machine_type', 'like', '%' . strtolower($search) . '%')
+                        ->orWhere('department', 'like', '%' . strtolower($search) . '%')
+                        ->orWhere('description', 'like', '%' . strtolower($search) . '%');
+                    // ->orWhere('', 'like', '%'.strtolower($search).'%');
                 })
-                ->orderBy('created_at', 'DESC')
+                ->orderBy('updated_at', 'DESC')
                 ->paginate($per_page);
-            
-            if($request){
+
+            if ($request) {
                 Session::put('filters', $request->all());
             }
             Session::put('rows_per_page', $per_page);
@@ -77,89 +69,72 @@ class MachinesController extends Controller
                 'department' => $department,
                 'filters' => $request->all()
             ]);
-        }
-        else
-        {
-            return redirect('/login')->back()->withErrors(['error' => ['Login to add access Machines dashboard']]);
+        } else {
+            return redirect('/login')->back()->withErrors(['error' => ['Login to access Machines dashboard']]);
         }
     }
     public function add_machine_post(Request $request)
     {
         // return $request;
-        if(Auth::check())
-        {
-            if($request->get('id'))
-            {
+        if (Auth::check()) {
+            if ($request->get('id')) {
                 $machine = Machines::where('id', $request->get('id'))->first();
                 $machine->machine_id = $request->get('machine_id');
                 $machine->machine_name = $request->get('machine_name');
                 $machine->machine_type = $request->get('machine_type');
                 $machine->department = $request->get('department');
-                if($request->get('last_maintenance_date'))
-                {
+                if ($request->get('last_maintenance_date')) {
                     $machine->last_maintenance_date = $request->get('last_maintenance_date');
                 }
-                if($request->get('due_maintenance_date'))
-                {
+                if ($request->get('due_maintenance_date')) {
                     $machine->due_maintenance_date = $request->get('due_maintenance_date');
                 }
-                if($request->get('operation_start_date'))
-                {
+                if ($request->get('operation_start_date')) {
                     $machine->operation_start_date = $request->get('operation_start_date');
                 }
-                if($request->get('description'))
-                {
+                if ($request->get('description')) {
                     $machine->description = $request->get('description');
                 }
                 $machine->save();
-            }
-            else
-            {
+            } else {
                 $machine = new Machines;
                 $machine->machine_id = $request->get('machine_id');
                 $machine->machine_name = $request->get('machine_name');
                 $machine->machine_type = $request->get('machine_type');
                 $machine->department = $request->get('department');
-                if($request->get('last_maintenance_date'))
-                {
+                if ($request->get('last_maintenance_date')) {
                     $machine->last_maintenance_date = $request->get('last_maintenance_date');
                 }
-                if($request->get('due_maintenance_date'))
-                {
+                if ($request->get('due_maintenance_date')) {
                     $machine->due_maintenance_date = $request->get('due_maintenance_date');
                 }
-                if($request->get('operation_start_date'))
-                {
+                if ($request->get('operation_start_date')) {
                     $machine->operation_start_date = $request->get('operation_start_date');
                 }
-                if($request->get('description'))
-                {
+                if ($request->get('description')) {
                     $machine->description = $request->get('description');
                 }
                 $machine->save();
             }
-            $machine_detail=Machines::where('machine_id', $request->get('machine_id'))->first();
+            $machine_detail = Machines::where('machine_id', $request->get('machine_id'))->first();
             $medias = $request->media;
-            if($medias)
-            {
-                foreach($medias as $key => $file)
-                {
+            if ($medias) {
+                foreach ($medias as $key => $file) {
                     $check_extension = $file->extension();
                     $check_image = array('jpeg', 'png', 'jpg');
                     $check_video = array('mp4', 'avi', 'mkv');
-                    
+
                     // return $file->extension();
-                    if(in_array($check_extension, $check_image))
-                    {
-                        $imageName = time().rand(1,999).'.'.$file->extension();
+                    if (in_array($check_extension, $check_image)) {
+                        $imageName = time() . rand(1, 999) . '.' . $file->extension();
                         $file->move(public_path('storage/uploads'), $imageName);
                         $path = public_path('storage/uploads');
                         $manager = new ImageManager();
                         $thumb_path = public_path('storage/uploads/thumbnail');
-                        $thumb_name = 'thumbnail_'.$imageName;
-                        $imageMin = $manager->make(public_path('storage/uploads').'/'.$imageName)->resize(400, 400)->save($thumb_path.'/'.$thumb_name);
-                        $file_name= "/storage/uploads/" . $imageName;
-                        $thumb_file_name= "/storage/uploads/thumbnail/" .'thumbnail_' . $imageName;
+                        $thumb_name = 'thumbnail_' . $imageName;
+                        $imageMin = $manager->make(public_path('storage/uploads') . '/' . $imageName)->resize(400, 400)->save($thumb_path . '/' . $thumb_name);
+                        $file_name = "/storage/uploads/" . $imageName;
+                        $thumb_file_name = "/storage/uploads/thumbnail/" . 'thumbnail_' . $imageName;
 
                         $save_image = new Media;
                         $save_image->machine_id = $machine_detail->id;
@@ -167,19 +142,19 @@ class MachinesController extends Controller
                         $save_image->media_type = 'image';
                         $save_image->name = $imageName;
                         $save_image->path = $file_name;
-                        $save_image->thumbnail_name = 'thumbnail_'.$imageName;
+                        $save_image->thumbnail_name = 'thumbnail_' . $imageName;
                         $save_image->thumbnail_path = $thumb_file_name;
                         $save_image->for_status = "detail";
                         $save_image->save();
                     }
 
-                    if(in_array($check_extension, $check_video)){
-                        
-                        $videoName = time().rand(1,999).'.'.$file->extension();  
+                    if (in_array($check_extension, $check_video)) {
+
+                        $videoName = time() . rand(1, 999) . '.' . $file->extension();
                         $file->move(public_path('storage/uploaded_video'), $videoName);
                         $path = public_path('storage/uploaded_video');
-                        $file_name= "/storage/uploaded_video/" . $videoName;
-                        
+                        $file_name = "/storage/uploaded_video/" . $videoName;
+
                         $save_video = new Media;
                         $save_video->machine_id = $machine_detail->id;
                         $save_video->created_by = Auth::id();
@@ -191,55 +166,41 @@ class MachinesController extends Controller
                     }
                 }
             }
-            if($request->get('id'))
-            {
-                return redirect('/machine/'.$machine_detail->id)->with('message', 'Machine details updated successfully');
+            if ($request->get('id')) {
+                return redirect('/machine/' . $machine_detail->id)->with('message', 'Machine details updated successfully');
+            } else {
+                return redirect('/machine/' . $machine_detail->id)->with('message', 'Machine details added successfully');
             }
-            else
-            {
-                return redirect('/machine/'.$machine_detail->id)->with('message', 'Machine details added successfully');
-            }
-        }
-        else
-        {
-            return redirect()->back()->withErrors(['error' => ['Login to add a mechine details']]);
+        } else {
+            return redirect()->back()->withErrors(['error' => ['Login to add a machine details']]);
         }
     }
     public function machine_details($id)
     {
         $machine_detail = Machines::where('id', $id)->with(['medias', 'maintenances'])->first();
-        if($machine_detail)
-        {
+        if ($machine_detail) {
             $spares = Spares::where('parent_machine', $id)->with('medias')->get();
             // return $spares;
             return view('machines.details', [
                 'machine_detail' => $machine_detail,
                 'spares' => $spares,
             ]);
-        }
-        else
-        {
+        } else {
             return redirect()->back()->withErrors(['eror' => ['Machine details not found, please contact your senior or admin.']]);
         }
     }
     public function update_machine_get($id)
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $machine = Machines::where('id', $id)->first();
-            if($machine)
-            {
+            if ($machine) {
                 return view('machines.add_machine', [
                     'machine' => $machine,
                 ]);
-            }
-            else
-            {
+            } else {
                 return redirect('/add_machine');
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->withErrors(['eror' => ["You don't have the access to edit the details."]]);
         }
     }
